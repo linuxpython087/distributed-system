@@ -32,7 +32,7 @@ jobs:
         images: ${{ secrets.DOCKERHUB_USERNAME }}/tchalim-canonical-distributed
         tags: |
           type=raw,value=v2
-          type=raw,value=v3
+          type=raw,value=v4
           type=sha
 
     - name: Set up QEMU

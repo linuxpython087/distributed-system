@@ -6,6 +6,7 @@ WORKDIR /app
 # Install build dependencies (only here)
 RUN apt-get update && apt-get install -y \
     build-essential \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy only requirements first (for caching)
