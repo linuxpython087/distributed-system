@@ -42,12 +42,17 @@ COPY --from=builder /install /usr/local
 # Copy app code
 COPY . .
 
-# Permissions
-RUN chown -R appuser:appuser /app
+#  Add entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+
+#  Permissions (script must be executable)
+RUN chmod +x /entrypoint.sh && \
+    chown -R appuser:appuser /app
+
+
 
 USER appuser
 
 EXPOSE 8000
 
-ENTRYPOINT ["uvicorn"]
-CMD ["main:app", "--host", "0.0.0.0", "--port", "8000"]
+ENTRYPOINT ["/entrypoint.sh"]
