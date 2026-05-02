@@ -32,12 +32,20 @@ jobs:
         images: ${{ secrets.DOCKERHUB_USERNAME }}/tchalim-canonical-distributed
         tags: |
           type=raw,value=v2
-          type=raw,value=latest
+          type=raw,value=v3
           type=sha
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v4
+
+    # 5. buildx
+    - name: Build and Push
+      uses: docker/setup-buildx-action@v4
+    
 
     # 5. Build & Push image
     - name: Build and Push
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v7
       with:
         context: .
         push: true
