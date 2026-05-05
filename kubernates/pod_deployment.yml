@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fault-tolerant-api
+  namespace: fault-tolerant
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fault-tolerant-api
+  template:
+    metadata:
+      labels:
+        app: fault-tolerant-api
+    spec:
+      imagePullSecrets:
+      - name: dockerhub-secret   
+      containers:
+      - name: fault-tolerant
+        image: tchalimcanonical/tchalim-canonical-distributed:v4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "300Mi"
+            cpu: "1000m"
+
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 3
+          periodSeconds: 5
+
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
